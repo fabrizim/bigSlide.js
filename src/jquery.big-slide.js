@@ -105,7 +105,9 @@
         this.$menu.css(settings.side, '0');
         this.$push.css(settings.side, this.width);
         //menuLink.addClass(settings.activeBtn);
-        menuLink.trigger('toggleopen', [pub]).trigger('toggle', [true, pub]);
+        menuLink
+          .trigger('toggleopen.bigslide', [pub])
+          .trigger('toggle.bigslide', [true, pub]);
       },
 
       // toggle the menu closed
@@ -114,7 +116,9 @@
         this.$menu.css(settings.side, '-' + this.width);
         this.$push.css(settings.side, '0');
         //menuLink.removeClass(settings.activeBtn);
-        menuLink.trigger('toggleclose', [pub]).trigger('toggle', [false, pub]);
+        menuLink
+          .trigger('toggleclose.bigslide', [pub])
+          .trigger('toggle.bigslide', [false, pub]);
       }
 
     }
