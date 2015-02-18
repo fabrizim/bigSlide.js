@@ -105,8 +105,7 @@
         this.$menu.css(settings.side, '0');
         this.$push.css(settings.side, this.width);
         //menuLink.addClass(settings.activeBtn);
-        menuLink.trigger('toggleopen', [pub]);
-        menuLink.trigger('toggle', [true, pub]);
+        menuLink.trigger('toggleopen', [pub]).trigger('toggle', [true, pub]);
       },
 
       // toggle the menu closed
@@ -115,8 +114,7 @@
         this.$menu.css(settings.side, '-' + this.width);
         this.$push.css(settings.side, '0');
         //menuLink.removeClass(settings.activeBtn);
-        menuLink.trigger('toggleclose', [pub]);
-        menuLink.trigger('toggle', [false, pub]);
+        menuLink.trigger('toggleclose', [pub]).trigger('toggle', [false, pub]);
       }
 
     }
