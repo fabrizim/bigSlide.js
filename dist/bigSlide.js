@@ -1,4 +1,4 @@
-/*! bigSlide - v0.6.1 - 2015-02-12
+/*! bigSlide - v0.7.0 - 2015-02-17
 * http://ascott1.github.io/bigSlide.js/
 * Copyright (c) 2015 Adam D. Scott; Licensed MIT */
 (function($) {
@@ -6,7 +6,7 @@
 
   $.fn.bigSlide = function(options) {
     // store the menuLink in a way that is globally accessible
-    var menuLink = this;
+    var menuLink = this, pub;
 
     // plugin settings
     var settings = $.extend({
@@ -15,7 +15,8 @@
       'side': 'left',
       'menuWidth': '15.625em',
       'speed': '300',
-      'state': 'closed'
+      'state': 'closed',
+      'easyClose': false
     }, options);
 
     // store the menu's state in the model
@@ -90,6 +91,15 @@
             view.toggleOpen();
           }
         });
+
+        // this makes my eyes blead, but adding it back in as it's a highly requested feature
+        if (settings.easyClose) {
+          $('body').on('click.bigSlide', function(e) {
+           if (!$(e.target).parents().andSelf().is(menuLink) && controller.getState() === 'open')  {
+             view.toggleClose();
+           }
+          });
+        }
       },
 
       // toggle the menu open
@@ -98,6 +108,8 @@
         this.$menu.css(settings.side, '0');
         this.$push.css(settings.side, this.width);
         //menuLink.addClass(settings.activeBtn);
+        menuLink.trigger('toggleopen', [pub]);
+        menuLink.trigger('toggle', [true, pub]);
       },
 
       // toggle the menu closed
@@ -106,12 +118,19 @@
         this.$menu.css(settings.side, '-' + this.width);
         this.$push.css(settings.side, '0');
         //menuLink.removeClass(settings.activeBtn);
+        menuLink.trigger('toggleclose', [pub]);
+        menuLink.trigger('toggle', [false, pub]);
       }
 
     }
 
     controller.init();
-
+    
+    pub = {model:model, view:view, controller:controller, settings:settings};
+    
+    // allow public access to the bigSlide components
+    menuLink.data('bigSlide', pub);
+    return this;
   };
 
 }(jQuery));
